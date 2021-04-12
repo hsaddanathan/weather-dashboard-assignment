@@ -4,7 +4,7 @@ $(document).ready(function () {
   var submitForm = $("#submit-form");
   var searchBar = $("#searchField");
   var apiKey = "cf002751564a4c78f5f7ed479f1b9ba3";
-
+  var storedCities = JSON.parse(localStorage.getItem("history")) || [];
   // Function Definitions
 
   //   Grabs UV Information based off of lat and lon gathered from the City Search
@@ -34,7 +34,7 @@ $(document).ready(function () {
     for (var i = 1; i < 8; i++) {
       var newDay = response.daily[i];
       var newDate = moment().add(i, "days").format("L");
-      var dayOfWeek= moment().add(i, "days").format("dddd");
+      var dayOfWeek = moment().add(i, "days").format("dddd");
       var newCard = $(
         '<div class="card text-white bg-primary ml-1" style="max-width: 18rem; display: inline-block"></div>'
       );
@@ -76,14 +76,18 @@ $(document).ready(function () {
       .text("" + response.name + " (" + moment().format("L") + ")")
       .append(
         $(
-          '<img class="images" src ="https://openweathermap.org/img/wn/' +
+          '<img id="currentImage" src ="https://openweathermap.org/img/wn/' +
             response.weather[0].icon +
             '.png"/>'
         )
       );
-    $("#responseTemp").text(
-      Math.ceil(response.main.temp) + String.fromCharCode(176) + "F"
+    $("#temp").text("Current Temperature: " + Math.ceil(response.main.temp)+ String.fromCharCode(176) + "F");
+    $("#responseLowTemp").text(
+      Math.ceil(response.main.temp_min) + String.fromCharCode(176) + "F"
     );
+    $("#responseHighTemp").text(
+        Math.ceil(response.main.temp_max) + String.fromCharCode(176) + "F"
+      );
     $("#responseFeelsLike").text(
       Math.ceil(response.main.feels_like) + String.fromCharCode(176) + "F"
     );
@@ -92,13 +96,46 @@ $(document).ready(function () {
     getUVIndex(response.coord.lat, response.coord.lon);
   }
 
-  function onload(){
-      window.navigator.geolocation.getCurrentPosition(function (position) {
-          console.log(position.coords);
-          var userLat = position.coords.latitude;
-          var userLon = position.coords.longitude;
-          currentGeoWeather(userLat,userLon);
-        });
+  function cityButtons(response) {
+    var cityHistory = [];
+    if (storedCities.indexOf(response.name) === -1) {
+      cityHistory.push(response.name);
+      storedCities.unshift(response.name);
+      localStorage.setItem("history", JSON.stringify(storedCities));
+    }
+
+    for (var i = 0; i < cityHistory.length; i++) {
+      var newDiv = $("<div>");
+      newDiv.append(
+        $(
+          "<button type='button' class='btn btn-light cityButton my-1 py-3 text-start col-sm-9'>" +
+            cityHistory[i] +
+            "</button>"
+        )
+      );
+      $("#savedCities").prepend(newDiv);
+    }
+  }
+
+//   Function for when page loads
+  function onload() {
+    window.navigator.geolocation.getCurrentPosition(function (position) {
+      console.log(position.coords);
+      var userLat = position.coords.latitude;
+      var userLon = position.coords.longitude;
+      currentGeoWeather(userLat, userLon);
+    });
+    for (var i = 0; i < storedCities.length; i++) {
+      var newDiv = $("<div>");
+      newDiv.append(
+        $(
+          "<button type='button' class='btn btn-light cityButton my-1 py-3 text-start col-sm-9'>" +
+            storedCities[i] +
+            "</button>"
+        )
+      );
+      $("#savedCities").append(newDiv);
+    }
   }
 
   onload();
@@ -119,7 +156,8 @@ $(document).ready(function () {
       method: "GET",
     }).done(function (response) {
       console.log(response);
-    populateCityData(response);
+      populateCityData(response);
+      cityButtons(response);
     });
   }
 
@@ -138,7 +176,8 @@ $(document).ready(function () {
       method: "GET",
     }).done(function (response) {
       console.log(response);
-    populateCityData(response);
+      populateCityData(response);
+      cityButtons(response);
     });
   }
   // Coordinate Search
@@ -156,7 +195,8 @@ $(document).ready(function () {
       method: "GET",
     }).done(function (response) {
       console.log(response);
-    populateCityData(response);
+      populateCityData(response);
+      cityButtons(response);
     });
   }
 
@@ -212,7 +252,7 @@ $(document).ready(function () {
       );
       $("#alert").append(alertUser);
       var hideAlert = setInterval(function () {
-        $("#alert").hide();
+        $("#alert").empty();
       }, 3000);
     } else if (selectOption.val() === "coordinates") {
       clearInterval(hideAlert);
@@ -225,4 +265,8 @@ $(document).ready(function () {
       currentZipWeather(searchValue);
     }
   });
+
+  $("#savedCities").on("click", ".btn",function(){
+    currentCityWeather(this.textContent);
+})
 });

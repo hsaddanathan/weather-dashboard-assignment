@@ -39,7 +39,7 @@
         </div>
       </div>
       <div class="row">
-          <!-- Left Side Column For Search Bar -->
+        <!-- Left Side Column For Search Bar -->
         <div class="col-sm-4 pt-4" id="searchColumn">
           <div class="col-sm-9 my-3">
             <select
@@ -54,7 +54,7 @@
             </select>
             <div id="alert"></div>
           </div>
-          <form class="form-group ml-1 py-3" id="search">
+          <form class="form-group ml-1" id="search">
             <h4 id="searchHeader"></h4>
             <input
               type="text"
@@ -71,37 +71,65 @@
             </button>
             <p id="inputNotes"></p>
           </form>
+          <div class="row mt-5">
+          <div id="savedCities">
+            <h3 id="previousSearchHeader">Previous Searches</h3>
+          </div>
+        </div>
         </div>
         <!-- Right Side For Weather Conditions -->
         <div class="col-sm-8 pt-4" id="weatherColumn">
           <div class="row my-auto">
             <div class="col-sm-12">
-                <!-- Current Weather Conditions -->
+              <!-- Current Weather Conditions -->
               <div class="px-3 py-3 my-3 mx-3" id="currentWeatherDiv">
-                <h1 class="display-5 fw-bold text-center" id="current-weather-header">
-                  Current Weather
-                </h1>
-                <h2 id="city-name"></h2>
-                <div class="col-lg-12">
-                  <p id="temp">
-                    Temperature:
-                    <span id="responseTemp" class="response"></span>
-                  </p>
-                  <p id="feelsLike">
-                    Feels Like:
-                    <span id="responseFeelsLike" class="response"></span>
-                  </p>
-                  <p id="humid">
-                    Humidity: <span id="responseHumid" class="response"></span>
-                  </p>
-                  <p id="wind-speed">
-                    Wind Speed:
-                    <span id="responseWindSpeed" class="response"></span>
-                  </p>
-                  <p id="uv-index">
-                    UV Index:
-                    <span id="responseUVIndex" class="response"></span>
-                  </p>
+                <div class="row">
+                  <div class="col-sm-12 mb-2">
+                    <h1
+                      class="display-5 fw-bold text-center"
+                      id="current-weather-header"
+                    >
+                      Current Weather
+                    </h1>
+                  </div>
+                  <div class="col-sm-6">
+                    <h2 id="city-name"></h2>
+                  </div>
+                  <div class="col-sm-6">
+                    <h2 id="temp" class="text-end"></h2>
+                  </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <p id="lowTemp">
+                          Low:
+                          <span id="responseLowTemp" class="response"></span>
+                        </p>
+                        <p id="highTemp">
+                          High:
+                          <span id="responseHighTemp" class="response"></span>
+                        </p>
+                      </div>
+                  <div class="col-sm-4">
+                    <p id="feelsLike">
+                      Feels Like:
+                      <span id="responseFeelsLike" class="response"></span>
+                    </p>
+                    <p id="humid">
+                      Humidity:
+                      <span id="responseHumid" class="response"></span>
+                    </p>
+                  </div>
+                  <div class="col-sm-4">
+                    <p id="wind-speed">
+                      Wind Speed:
+                      <span id="responseWindSpeed" class="response"></span>
+                    </p>
+                    <p id="uv-index">
+                      UV Index:
+                      <span id="responseUVIndex" class="response"></span>
+                    </p>
+                  </div>
                   <div
                     class="d-grid gap-2 d-sm-flex justify-content-sm-center"
                   ></div>
@@ -111,7 +139,7 @@
           </div>
           <div class="row">
             <div class="col-sm-12">
-                <!-- 7 Day Forecast -->
+              <!-- 7 Day Forecast -->
               <div class="px-3 py-3 my-3 mx-3 text-center" id="sevenDayDiv">
                 <h1 class="display-5 fw-bold">7 Day Forecast</h1>
                 <div class="col-lg-12 mx-auto" id="seven-day-display">
