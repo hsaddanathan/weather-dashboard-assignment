@@ -4,7 +4,7 @@ $(document).ready(function () {
   var submitForm = $("#submit-form");
   var searchBar = $("#searchField");
   var apiKey = "cf002751564a4c78f5f7ed479f1b9ba3";
-  var storedCities = JSON.parse(localStorage.getItem("history")) || [];
+  var storedCities = JSON.parse(sessionStorage.getItem("history")) || [];
   // Function Definitions
 
   //   Grabs UV Information based off of lat and lon gathered from the City Search
@@ -101,9 +101,9 @@ $(document).ready(function () {
     if (storedCities.indexOf(response.name) === -1) {
       cityHistory.push(response.name);
       storedCities.unshift(response.name);
-      localStorage.setItem("history", JSON.stringify(storedCities));
+      sessionStorage.setItem("history", JSON.stringify(storedCities));
     }
-
+    searchBar.val("");
     for (var i = 0; i < cityHistory.length; i++) {
       var newDiv = $("<div>");
       newDiv.append(
@@ -257,9 +257,11 @@ $(document).ready(function () {
     } else if (selectOption.val() === "coordinates") {
       clearInterval(hideAlert);
       handleGeoCoordinates(searchValue);
+      searchBar.empty();
     } else if (selectOption.val() === "city") {
       clearInterval(hideAlert);
       currentCityWeather(searchValue);
+      searchBar.empty();
     } else {
       clearInterval(hideAlert);
       currentZipWeather(searchValue);
