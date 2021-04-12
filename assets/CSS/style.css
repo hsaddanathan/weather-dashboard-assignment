@@ -1,0 +1,83 @@
+html,
+body {
+  height: 100%;
+  background-image: linear-gradient(
+    to top,
+    white,
+    #71a8ee,
+    #3072eb,
+    #1552c6,
+    #0542a8
+  );
+} 
+#heading {
+  background-color: #043486;
+  color: white;
+  height: 150px;
+}
+#siteHeader {
+  font-size: 3.25rem;
+}
+/* Search Criteria Box */
+#selectOption {
+  border-radius: 16px;
+  background-color:whitesmoke;
+}
+/* Alert if No Criteria */
+#alertMessage {
+  border-radius: 16px;
+}
+/* Search Box */
+#searchField {
+  border-radius: 16px;
+  background-color:whitesmoke;
+}
+/* Search Button */
+#submit-form {
+  border-radius: 16px;
+}
+/* Dynamic Notes for Coordinate Search */
+#inputNotes {
+  font-size: 0.9rem;
+  color: gray;
+}
+
+#previousSearchHeader {
+  color: white;
+}
+/* Buttons for Previous Searches */
+.cityButton {
+  border-radius: 16px !important;
+  background-color: whitesmoke;
+  border-width: 2px !important;
+  color: #414141 !important;
+}
+#currentWeatherDiv {
+  border-radius: 16px;
+  border: 2px solid whitesmoke;
+  background-color: whitesmoke;
+  color: #414141;
+}
+/* Data Response from API Call */
+.response {
+  font-weight: 900;
+}
+#sevenDayDiv {
+  border-radius: 16px;
+  border: 2px solid whitesmoke;
+  background-color: whitesmoke;
+  color: #414141;
+}
+/* Daily Forecast Cards */
+.card {
+  margin: 10px;
+}
+/* Weather Icons */
+.images {
+  width: 75px;
+  height: auto;
+}
+/* Current Weather Icon */
+#currentImage {
+  background-color: #e5e5e5;
+}
