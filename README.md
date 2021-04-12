@@ -29,8 +29,8 @@ Alternatively, you can navigate to https://hsaddanathan.github.io/weather-dashbo
     * Bootstrap
     
 ## Demo
-![Weather Dashboard](./assets/weather-dashboard.png)
-![Weather Dashboard Demo](public/assets/weather-dashboard.gif)
+![Weather Dashboard](assets/images/weather-dashboard.png)
+![Weather Dashboard Demo](assets/images/weather-dashboard.gif)
 
 
 ## Links
