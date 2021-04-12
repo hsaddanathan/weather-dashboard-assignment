@@ -1,4 +1,4 @@
-# weather-dashboard-assignment
+# Weather Dashboard
 
 ## Summary
 In this assignment, I was tasked to create a weather application to check the weather based on user input. Users are able to search by city, zip code, and geocoordinates. I was provided an API from [OpenWeatherMap](https://openweathermap.org/), and I was able to pull current weather and forecast from this API. Upon load, the application grabs the user's geolocation and provides current weather info for their location. In addition, users can search other cities on the right hand side. Once the user registers a searched city, a button dynamically populates so the user can click and search the weather quickly.
