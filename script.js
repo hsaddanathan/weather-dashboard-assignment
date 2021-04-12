@@ -7,6 +7,90 @@ $(document).ready(function () {
 
   // Function Definitions
 
+  //   Grabs UV Information based off of lat and lon gathered from the City Search
+  function getUVIndex(lat, lon) {
+    var queryUrl =
+      "https://api.openweathermap.org/data/2.5/onecall?lat=" +
+      lat +
+      "&lon=" +
+      lon +
+      "&appid=" +
+      apiKey +
+      "&units=imperial";
+    $.ajax({
+      url: queryUrl,
+      method: "GET",
+    }).then(function (response) {
+      sevenDayForecast(response);
+      console.log(response);
+      var uV = response.current.uvi;
+      $("#responseUVIndex").text(uV);
+    });
+  }
+
+  //  Grabs Seven Day Forecast and Creates Cards for each day nests inside UV Function
+  function sevenDayForecast(response) {
+    $("#seven-day-display").empty();
+    for (var i = 1; i < 8; i++) {
+      var newDay = response.daily[i];
+      var newDate = moment().add(i, "days").format("L");
+
+      var newCard = $(
+        '<div class="card text-white bg-primary ml-1" style="max-width: 18rem; display: inline-block"></div>'
+      );
+      newCard.append("<div class='card-header'>" + newDate + "</div>");
+      newCard.append(
+        $(
+          '<img class="images" src ="https://openweathermap.org/img/wn/' +
+            newDay.weather[0].icon +
+            '.png"/>'
+        )
+      );
+      newCard
+        .append('<div class="card-body"></div>')
+        .append(
+          '<p class="card-title">' +
+            Math.floor(newDay.temp.min) +
+            String.fromCharCode(176) +
+            "/" +
+            Math.ceil(newDay.temp.max) +
+            String.fromCharCode(176) +
+            "</p>"
+        )
+        .append(
+          '<p class="card-text">' +
+            "Humidity: " +
+            newDay.humidity +
+            "%" +
+            "</p>"
+        );
+
+      $("#seven-day-display").append(newCard);
+    }
+  }
+
+  //Function To Populate Search Data
+  function populateCityData(response) {
+    $("#city-name")
+      .text("" + response.name + " (" + moment().format("L") + ")")
+      .append(
+        $(
+          '<img class="images" src ="https://openweathermap.org/img/wn/' +
+            response.weather[0].icon +
+            '.png"/>'
+        )
+      );
+    $("#responseTemp").text(
+      Math.ceil(response.main.temp) + String.fromCharCode(176) + "F"
+    );
+    $("#responseFeelsLike").text(
+      Math.ceil(response.main.feels_like) + String.fromCharCode(176) + "F"
+    );
+    $("#responseHumid").text(response.main.humidity + "%");
+    $("#responseWindSpeed").text(response.wind.speed + " MPH");
+    getUVIndex(response.coord.lat, response.coord.lon);
+  }
+
   // API/AJAX Functions
 
   // City Search
@@ -23,24 +107,7 @@ $(document).ready(function () {
       method: "GET",
     }).done(function (response) {
       console.log(response);
-      $("#city-name")
-        .text("" + response.name + " (" + moment().format("L") + ")")
-        .append(
-          $(
-            '<img class="images" src ="https://openweathermap.org/img/wn/' +
-              response.weather[0].icon +
-              '.png"/>'
-          )
-        );
-      $("#responseTemp").text(
-        Math.ceil(response.main.temp) + String.fromCharCode(176) + "F"
-      );
-      $("#responseFeelsLike").text(
-        Math.ceil(response.main.feels_like) + String.fromCharCode(176) + "F"
-      );
-      $("#responseHumid").text(response.main.humidity + "%");
-      $("#responseWindSpeed").text(response.wind.speed + " MPH");
-      getUVIndex(response.coord.lat, response.coord.lon);
+    populateCityData(response);
     });
   }
 
@@ -59,25 +126,7 @@ $(document).ready(function () {
       method: "GET",
     }).done(function (response) {
       console.log(response);
-      $("#city-name")
-        .text("" + response.name + " (" + moment().format("L") + ")")
-        .append(
-          $(
-            '<img class="images" src ="https://openweathermap.org/img/wn/' +
-              response.weather[0].icon +
-              '.png"/>'
-          )
-        );
-      $("#responseTemp").text(
-        Math.ceil(response.main.temp) + String.fromCharCode(176) + "F"
-      );
-      $("#responseFeelsLike").text(
-        Math.ceil(response.main.feels_like) + String.fromCharCode(176) + "F"
-      );
-      $("#resonseHumid").text(response.main.humidity + "%");
-      $("#responseWind-speed").text(response.wind.speed + " MPH");
-      getUVIndex(response.coord.lat, response.coord.lon);
-      //   clearInterval(hideAlert);
+    populateCityData(response);
     });
   }
   // Coordinate Search
@@ -95,29 +144,11 @@ $(document).ready(function () {
       method: "GET",
     }).done(function (response) {
       console.log(response);
-      $("#city-name")
-        .text("" + response.name + " (" + moment().format("L") + ")")
-        .append(
-          $(
-            '<img class="images" src ="https://openweathermap.org/img/wn/' +
-              response.weather[0].icon +
-              '.png"/>'
-          )
-        );
-      $("#responseTemp").text(
-        Math.ceil(response.main.temp) + String.fromCharCode(176) + "F"
-      );
-      $("#responseFeelsLike").text(
-        Math.ceil(response.main.feels_like) + String.fromCharCode(176) + "F"
-      );
-      $("#resonseHumid").text(response.main.humidity + "%");
-      $("#responseWind-speed").text(response.wind.speed + " MPH");
-      getUVIndex(response.coord.lat, response.coord.lon);
-      // clearInterval(hideAlert);
+    populateCityData(response);
     });
   }
 
-//   Error Handling for unformatted Coordinates
+  //   Error Handling for unformatted Coordinates
   function handleGeoCoordinates(search) {
     var res = search.split(", ");
     console.log(res);
@@ -134,26 +165,19 @@ $(document).ready(function () {
     var latitude = res[0];
     var longitude = res[1];
     console.log(latitude + ", " + longitude);
-    // clearInterval(hideAlert);
     currentGeoWeather(latitude, longitude);
   }
 
+  // Event Listeners
 
-
-
-
-// Event Listeners
-
- selectOption.on("change", function () {
+  selectOption.on("change", function () {
     console.log(selectOption.val());
     if (selectOption.val() === "coordinates") {
-      // $("#searchHeader").text("Coordinates");
       $("#searchField").attr(
         "placeholder",
         "Coordinates-(Latitude, Longitude)"
       );
       $("#inputNotes").text("(Separated by a comma and space)");
-      // $("#search-input").text("Hello");
     } else if (selectOption.val() === "zip") {
       $("#searchField").attr("placeholder", "Zip Code");
       $("#inputNotes").empty();
@@ -192,5 +216,4 @@ $(document).ready(function () {
       currentZipWeather(searchValue);
     }
   });
-
 });
