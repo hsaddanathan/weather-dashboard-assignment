@@ -117,12 +117,32 @@ $(document).ready(function () {
     });
   }
 
+//   Error Handling for unformatted Coordinates
+  function handleGeoCoordinates(search) {
+    var res = search.split(", ");
+    console.log(res);
+    if (res[0].includes("N")) {
+      res[0] = parseFloat(res[0]);
+    } else if (res[0].includes("S")) {
+      res[0] = -parseFloat(res[0]);
+    }
+    if (res[1].includes("E")) {
+      res[1] = parseFloat(res[1]);
+    } else if (res[1].includes("W")) {
+      res[1] = -parseFloat(res[1]);
+    }
+    var latitude = res[0];
+    var longitude = res[1];
+    console.log(latitude + ", " + longitude);
+    // clearInterval(hideAlert);
+    currentGeoWeather(latitude, longitude);
+  }
+
 
 
 
 
 // Event Listeners
- // Event Listeners
 
  selectOption.on("change", function () {
     console.log(selectOption.val());
