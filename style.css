@@ -64,5 +64,9 @@ html,body{
     font-weight: 900;
 }
 .card{
-    margin: 15px;
+    margin: 10px;
+}
+
+#alertMessage{
+    border-radius: 16px;
 }

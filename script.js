@@ -34,11 +34,12 @@ $(document).ready(function () {
     for (var i = 1; i < 8; i++) {
       var newDay = response.daily[i];
       var newDate = moment().add(i, "days").format("L");
-
+      var dayOfWeek= moment().add(i, "days").format("dddd");
       var newCard = $(
         '<div class="card text-white bg-primary ml-1" style="max-width: 18rem; display: inline-block"></div>'
       );
       newCard.append("<div class='card-header'>" + newDate + "</div>");
+      newCard.append("<div class='card-header'>" + dayOfWeek + "</div>");
       newCard.append(
         $(
           '<img class="images" src ="https://openweathermap.org/img/wn/' +
@@ -90,6 +91,17 @@ $(document).ready(function () {
     $("#responseWindSpeed").text(response.wind.speed + " MPH");
     getUVIndex(response.coord.lat, response.coord.lon);
   }
+
+  function onload(){
+      window.navigator.geolocation.getCurrentPosition(function (position) {
+          console.log(position.coords);
+          var userLat = position.coords.latitude;
+          var userLon = position.coords.longitude;
+          currentGeoWeather(userLat,userLon);
+        });
+  }
+
+  onload();
 
   // API/AJAX Functions
 
@@ -196,7 +208,7 @@ $(document).ready(function () {
     var searchValue = searchBar.val();
     if (searchSelection === "How would you like to search?") {
       var alertUser = $(
-        '<div class="alert alert-danger" role="alert">You must select a search criteria</div>'
+        '<div class="alert alert-danger" role="alert" id="alertMessage">You must select a search criteria</div>'
       );
       $("#alert").append(alertUser);
       var hideAlert = setInterval(function () {
@@ -205,9 +217,6 @@ $(document).ready(function () {
     } else if (selectOption.val() === "coordinates") {
       clearInterval(hideAlert);
       handleGeoCoordinates(searchValue);
-      //   window.navigator.geolocation.getCurrentPosition(function (position) {
-      //     console.log(position.coords);
-      //   });
     } else if (selectOption.val() === "city") {
       clearInterval(hideAlert);
       currentCityWeather(searchValue);
